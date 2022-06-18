@@ -62,7 +62,7 @@ Changes not staged for commit:
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-(2)如果想知道具体有什么变化，可以用diff命令
+（2）如果想知道具体有什么变化，可以用diff命令
 
 ```shell
 $ git diff readme.txt
@@ -78,10 +78,40 @@ index 46d49bf..9247db6 100644
 
 ## 2.1 版本回退
 
-每一次commit都会保存一个快照，如果不小心弄乱了文件，或误删了文件，都可以从**最近的一次**commit恢复
+​	每一次commit都会保存一个快照，如果不小心弄乱了文件，或误删了文件，都可以从**最近的一次**commit恢复
 
 （1）查看修改历史
 
+```shell
+$ git log
+commit e42d004c72e26f3b45b98ffb37fb53a2dcc02bf7 (HEAD -> master)
+Author:用户名<邮箱>
+Date: 修改日期
+	这次的提交说明
+commit 0bc8ec8be27e8e0d94a94850c9a97e62c9f86ab6
+以下类似
 ```
-git log
+
+note1：--pretty=oneline参数可以简化信息，e42d004...这一大坨数字是由SHA-1算法计算出的版本号(commit ID)
+
+note2:HEAD代表当前版本，HEAD^表示上一个版本，HEAD^^表示上上一个版本，同时可以用HEAD~2简写
+
+（2）回退版本
+
+```shell
+git reset --hard HEAD^
 ```
+
+​	此时当前的版本会回到上一个版本0bc8e，同时在log中删除e42..这个版本，如果希望版本再次变成e42d,可以使用如下命令
+
+```shell
+git rest --hard e42
+```
+
+​	也就是说可以直接通过版本号变更当前版本，同时不需要把版本号写全，git会自动寻找，如果忘记了e42d..这个版本号，可以通过reflog命令查询
+
+```shell
+$ git reflog
+```
+
+​	reflog会输出所有你执行过的命令，可以在哪里看到commit时产生的版本号
