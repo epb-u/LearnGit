@@ -1,5 +1,7 @@
 # 1 git简介
 
+什么是git？一个用于管理软件版本的软件
+
 ##  1.1 安装git
 
 下载网站：https://git-scm.com/downloads
@@ -96,6 +98,8 @@ note1：--pretty=oneline参数可以简化信息，e42d004...这一大坨数字�
 
 note2:HEAD代表当前版本，HEAD^表示上一个版本，HEAD^^表示上上一个版本，同时可以用HEAD~2简写
 
+note3:log内容查看结束后在键盘敲入q即可退出。
+
 （2）回退版本
 
 ```shell
@@ -115,3 +119,54 @@ $ git reflog
 ```
 
 ​	reflog会输出所有你执行过的命令，可以在哪里看到commit时产生的版本号
+
+## 2.2工作区和暂存区
+
+（1）工作区
+
+在文件系统中可以看到的目录即为一个工作区
+
+（2）暂存区
+
+​	在某个工作区中git init后产生的.git隐藏目录即为一个版本库，在.git目录中的index二进制文件就是暂存区(stage)，git add后文件暂存到这个地方。Git会自动创建一个**分支**master，git commit后文件全部提交到这个分支
+
+​	.git隐藏目录中的HEAD文件中记载了master文件的位置，如refs/heads/master，而master文件记录了当前版本的版本号
+
+（3）tracked和untracked
+
+​	所有在工作区的文件都会被git管理，如果某个文件没有被add，那么文件状态为untracked，反之为tracked
+
+## 2.3修改管理
+
+​	git管理的是”修改“而不是文件，当文件被修改后，使用git add,再对文件进行更改，然后直接git commit，git就会提示用户，文件有变化但没有添加到暂存区(stage)。
+
+## 2.4撤销修改
+
+​	在word或其他文本编辑器中，ctrl+z就可以进行撤销操作，在git中可以使用两种方式进行撤销操作。
+
+（1）手动撤销
+
+​	手动把不想要的内容删掉，或者把不小心删除的内容重新写上去
+
+（2）使用 git checkout
+
+```shell
+$ git checkout --fileName
+```
+
+​	当文件没有被添加到暂存区：文件回到最开始的状态
+
+​	当文件已经被添加到暂存区：文件回到暂存区中的文件状态
+
+（当git add readme.txt后，这一时刻的版本即为A。那么checkout就会让readme.txt回到A版本。如果没有git add,那么之前 git commit会生成一个版本B,checkout就会让readme.txt回到B状态）
+
+## 2.5删除文件
+
+​	在工作区删除没用的文件，可以鼠标右键点击删除，或在命令行使用rm指令，此时在git bash中使用rm命令即可将文件从版本库中删除
+
+```shell
+$ git rm fileName
+```
+
+​	然后正常进行git commit即可，如果希望撤销删除，就使用checkout，需要注意的是，checkout本质上是从.git隐藏目录中找之前的“副本”，如果一开始就没有把文件add+commit，那么checkout就不可能成功。
+
