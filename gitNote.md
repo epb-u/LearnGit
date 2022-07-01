@@ -48,7 +48,7 @@ C）git commit 将所有暂存区的文件提交到版本库
 git commit -m "提交说明"
 ```
 
-# 2.版本控制
+# 2 版本控制
 
 （1）当改变文件内容后，可以通过status命令查看当前状态，可以看到readme.txt文件被修改过了，但没有提交(commit)
 
@@ -170,3 +170,49 @@ $ git rm fileName
 
 ​	然后正常进行git commit即可，如果希望撤销删除，就使用checkout，需要注意的是，checkout本质上是从.git隐藏目录中找之前的“副本”，如果一开始就没有把文件add+commit，那么checkout就不可能成功。
 
+# 3 远程仓库
+
+## 3.1 SSH设置
+
+​	什么是ssh? 一种网络安全协议，在github仓库和本地仓库直接使用该协议加密并传输数据。SSH采用公钥加密技术，即主机和服务器同时存有公钥，主机携带私钥，每次进行通信时，使用私钥验证主机身份。
+
+（1）创建SSH key
+
+```shell
+$ ssh-keygen -t rsa -C "youremail@example.com"
+```
+
+​	使用该命令后，在用户主目录下会产生.ssh隐藏文件夹，其中包含id_rsa和id_rsa.pub两个文件。前者是私钥，不能泄露给其他人，后者是公钥。
+
+（2）在github中添加公钥
+
+​	在设置中找到ssh keys界面，点击add SSH key,然后将id_rsa.pub中的内容复制进去。
+
+​	如果有多台电脑，可以生成多个key,然后将各个key的公钥保存到github个人账户中。
+
+## 3.2 添加远程库
+
+​	在github创建一个新的仓库后，可以将该仓库克隆到本地，或者将本地的一个项目与之关联
+
+```shell
+git remote add origin git@github.com:epb-u/LearnGit.git
+```
+
+​	origin代表远程库，由于主机和服务器中保存的都是LearnGit这个项目，为了区分主机端和服务器端的仓库，所以会给远程端起名叫origin，这是默认叫法，也可以改成自己想要的
+
+```shell
+git branch -M main
+git push -u origin main
+```
+
+分支概念在第四章详细介绍。
+
+## 3.3 从远程库克隆
+
+​	在github创建远程库之后，随便找个目录使用clone命令
+
+```shell
+git clone git@github.com:michaelliao/LearnGit.git
+```
+
+​	最终会在当前目录下生成LearnGit文件夹，里面会包含一个README.md，以及一个.git隐藏文件
